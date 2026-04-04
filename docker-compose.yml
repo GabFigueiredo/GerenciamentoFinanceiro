@@ -1,0 +1,36 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: gerenciamento-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gerenciamento_financeiro
+      MYSQL_USER: umc
+      MYSQL_PASSWORD: umc123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: gerenciamento-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/gerenciamento_financeiro
+      SPRING_DATASOURCE_USERNAME: umc
+      SPRING_DATASOURCE_PASSWORD: umc123
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
