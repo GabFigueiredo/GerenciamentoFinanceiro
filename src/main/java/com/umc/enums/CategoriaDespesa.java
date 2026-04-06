@@ -1,0 +1,11 @@
+package com.umc.enums;
+
+public enum CategoriaDespesa {
+    ALIMENTACAO,
+    TRANSPORTE,
+    SAUDE,
+    EDUCACAO,
+    LAZER,
+    MORADIA,
+    OUTROS
+}
