@@ -3,6 +3,7 @@ package com.umc.dao;
 import com.umc.config.DatabaseConfig;
 import com.umc.enums.Moeda;
 import com.umc.model.*;
+import com.umc.repositories.ContaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ContaDAO {
+public class ContaDAO implements ContaRepository {
 
     private final DatabaseConfig databaseConfig;
     private final UsuarioDAO usuarioDAO;

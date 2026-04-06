@@ -3,6 +3,7 @@ package com.umc.dao;
 import com.umc.config.DatabaseConfig;
 import com.umc.model.Contato;
 import com.umc.model.Usuario;
+import com.umc.repositories.UsuarioRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class UsuarioDAO {
+public class UsuarioDAO implements UsuarioRepository {
 
     private final DatabaseConfig databaseConfig;
 
