@@ -1,11 +1,9 @@
 package com.umc.model.Despesa;
 
-import com.umc.model.Despesa.Despesa;
-import com.umc.model.Frequencia;
-import com.umc.model.CategoriaDespesa;
-import com.umc.model.FormaPagamento;
-import com.umc.model.StatusDespesa;
-
+import com.umc.enums.CategoriaDespesa;
+import com.umc.enums.FormaPagamento;
+import com.umc.enums.Frequencia;
+import com.umc.enums.StatusDespesa;
 
 import java.time.LocalDate;
 
@@ -20,7 +18,7 @@ public class DespesaRecorrente extends Despesa {
     public DespesaRecorrente() {}
 
     public DespesaRecorrente(String id, String descricao, Double valor, LocalDate data,
-                             com.umc.model.CategoriaDespesa categoriaDespesa, StatusDespesa status,
+                             CategoriaDespesa categoriaDespesa, StatusDespesa status,
                              FormaPagamento formaPagamento, String observacao,
                              Frequencia frequencia, LocalDate dataInicio, LocalDate dataFim,
                              boolean ativa, Integer diaDeCobranca) {

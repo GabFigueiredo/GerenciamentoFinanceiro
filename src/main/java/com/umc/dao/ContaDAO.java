@@ -24,6 +24,8 @@ public class ContaDAO implements ContaRepository {
     }
 
     public void save(Conta conta) throws SQLException {
+        String id = conta.getId() != null ? conta.getId().toString() : UUID.randomUUID().toString();
+
         String sql = """
                 INSERT INTO conta (id, usuario_id, moeda, saldo_atual, despesa_mensal,
                                    limite_gasto_mensal, descricao, data_criacao, data_atualizacao)
@@ -33,7 +35,7 @@ public class ContaDAO implements ContaRepository {
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, UUID.randomUUID().toString());
+            stmt.setString(1, id);
             stmt.setString(2, conta.getUsuario().getId().toString());
             stmt.setString(3, conta.getMoeda().name());
             stmt.setDouble(4, conta.getSaldoAtual().getValor());
@@ -140,17 +142,15 @@ public class ContaDAO implements ContaRepository {
         Dinheiro despesaMensal = new Dinheiro(moeda, rs.getDouble("despesa_mensal"));
         Dinheiro limiteGastoMensal = new Dinheiro(moeda, rs.getDouble("limite_gasto_mensal"));
 
-        return new Conta(
-                UUID.fromString(rs.getString("id")),
-                usuario,
-                saldoAtual,
-                moeda,
-                despesaMensal,
-                null, // Metas loaded separately to avoid heavy joins
-                limiteGastoMensal,
-                rs.getString("descricao"),
-                rs.getDate("data_criacao").toLocalDate(),
-                rs.getDate("data_atualizacao").toLocalDate()
-        );
+        return Conta.builder(usuario, moeda)
+                .id(UUID.fromString(rs.getString("id")))
+                .saldoAtual(saldoAtual)
+                .despesaMensal(despesaMensal)
+                .metas(null) // Metas loaded separately to avoid heavy joins
+                .limiteGastoMensal(limiteGastoMensal)
+                .descricao(rs.getString("descricao"))
+                .dataCriacao(rs.getDate("data_criacao").toLocalDate())
+                .dataAtualizacao(rs.getDate("data_atualizacao").toLocalDate())
+                .build();
     }
 }
