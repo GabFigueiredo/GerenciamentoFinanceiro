@@ -2,7 +2,7 @@ package com.umc.controller.transacao.deposito;
 
 import com.umc.model.transacao.Deposito.Deposito;
 import com.umc.model.enums.Moeda;
-import com.umc.useCases.transacao.RealizarDepositoUseCase;
+import com.umc.useCases.transacao.deposito.RealizarDepositoUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -2,7 +2,7 @@ package com.umc.controller.transacao.saque;
 
 import com.umc.model.transacao.Saque.Saque;
 import com.umc.model.enums.Moeda;
-import com.umc.useCases.transacao.RealizarSaqueUseCase;
+import com.umc.useCases.transacao.saque.RealizarSaqueUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

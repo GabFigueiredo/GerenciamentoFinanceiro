@@ -10,6 +10,8 @@ public class Usuario {
     private UUID id;
     private String nome;
     private String cpf;
+    private String email;
+    private String senha;
     private Contato contato;
     private String cargo;
     private Double salario;
@@ -21,6 +23,8 @@ public class Usuario {
             @JsonProperty("id") UUID id,
             @JsonProperty("nome") String nome,
             @JsonProperty("cpf") String cpf,
+            @JsonProperty("email") String email,
+            @JsonProperty("senha") String senha,
             @JsonProperty("contato") Contato contato,
             @JsonProperty("cargo") String cargo,
             @JsonProperty("salario") Double salario
@@ -28,6 +32,8 @@ public class Usuario {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
         this.contato = contato;
         this.cargo = cargo;
         this.salario = salario;
@@ -41,6 +47,12 @@ public class Usuario {
 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 
     public Contato getContato() { return contato; }
     public void setContato(Contato contato) { this.contato = contato; }

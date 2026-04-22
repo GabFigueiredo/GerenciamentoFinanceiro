@@ -25,9 +25,9 @@ public class UsuarioDAO implements UsuarioRepository {
         String id = usuario.getId() != null ? usuario.getId().toString() : UUID.randomUUID().toString();
 
         String sql = """
-                INSERT INTO usuario (id, nome, cpf, cargo, salario,
-                                     contato_celular, contato_telefone, contato_email)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO usuario (id, nome, cpf, email, senha, cargo, salario,
+                                     contato_celular, contato_telefone)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = databaseConfig.getConnection();
@@ -36,11 +36,12 @@ public class UsuarioDAO implements UsuarioRepository {
             stmt.setString(1, id);
             stmt.setString(2, usuario.getNome());
             stmt.setString(3, usuario.getCpf());
-            stmt.setString(4, usuario.getCargo());
-            stmt.setDouble(5, usuario.getSalario());
-            stmt.setString(6, usuario.getContato().getCelular());
-            stmt.setString(7, usuario.getContato().getTelefone());
-            stmt.setString(8, usuario.getContato().getEmail());
+            stmt.setString(4, usuario.getEmail());
+            stmt.setString(5, usuario.getSenha());
+            stmt.setString(6, usuario.getCargo());
+            stmt.setDouble(7, usuario.getSalario());
+            stmt.setString(8, getCelular(usuario));
+            stmt.setString(9, getTelefone(usuario));
 
             stmt.executeUpdate();
         }
@@ -80,8 +81,8 @@ public class UsuarioDAO implements UsuarioRepository {
     public void update(Usuario usuario) throws SQLException {
         String sql = """
                 UPDATE usuario
-                SET nome = ?, cpf = ?, cargo = ?, salario = ?,
-                    contato_celular = ?, contato_telefone = ?, contato_email = ?
+                SET nome = ?, cpf = ?, email = ?, senha = ?, cargo = ?, salario = ?,
+                    contato_celular = ?, contato_telefone = ?
                 WHERE id = ?
                 """;
 
@@ -90,12 +91,13 @@ public class UsuarioDAO implements UsuarioRepository {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getCpf());
-            stmt.setString(3, usuario.getCargo());
-            stmt.setDouble(4, usuario.getSalario());
-            stmt.setString(5, usuario.getContato().getCelular());
-            stmt.setString(6, usuario.getContato().getTelefone());
-            stmt.setString(7, usuario.getContato().getEmail());
-            stmt.setString(8, usuario.getId().toString());
+            stmt.setString(3, usuario.getEmail());
+            stmt.setString(4, usuario.getSenha());
+            stmt.setString(5, usuario.getCargo());
+            stmt.setDouble(6, usuario.getSalario());
+            stmt.setString(7, getCelular(usuario));
+            stmt.setString(8, getTelefone(usuario));
+            stmt.setString(9, usuario.getId().toString());
 
             stmt.executeUpdate();
         }
@@ -116,17 +118,26 @@ public class UsuarioDAO implements UsuarioRepository {
     private Usuario mapRow(ResultSet rs) throws SQLException {
         Contato contato = new Contato(
                 rs.getString("contato_celular"),
-                rs.getString("contato_telefone"),
-                rs.getString("contato_email")
+                rs.getString("contato_telefone")
         );
 
         return new Usuario(
                 UUID.fromString(rs.getString("id")),
                 rs.getString("nome"),
                 rs.getString("cpf"),
+                rs.getString("email"),
+                rs.getString("senha"),
                 contato,
                 rs.getString("cargo"),
                 rs.getDouble("salario")
         );
+    }
+
+    private String getCelular(Usuario usuario) {
+        return usuario.getContato() != null ? usuario.getContato().getCelular() : null;
+    }
+
+    private String getTelefone(Usuario usuario) {
+        return usuario.getContato() != null ? usuario.getContato().getTelefone() : null;
     }
 }

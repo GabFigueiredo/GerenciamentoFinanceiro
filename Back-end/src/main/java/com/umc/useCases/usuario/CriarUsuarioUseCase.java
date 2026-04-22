@@ -24,7 +24,9 @@ public class CriarUsuarioUseCase {
                 UUID.randomUUID(),
                 command.nome(),
                 command.cpf(),
-                new Contato(command.celular(), command.telefone(), command.email()),
+                command.email(),
+                command.senha(),
+                new Contato(command.celular(), command.telefone()),
                 command.cargo(),
                 command.salario()
         );
@@ -40,6 +42,8 @@ public class CriarUsuarioUseCase {
             throw new IllegalArgumentException("cpf e obrigatorio");
         if (command.email() == null || command.email().isBlank())
             throw new IllegalArgumentException("email e obrigatorio");
+        if (command.senha() == null || command.senha().isBlank())
+            throw new IllegalArgumentException("senha e obrigatoria");
         if (command.salario() == null || command.salario() < 0)
             throw new IllegalArgumentException("salario invalido");
     }
@@ -50,6 +54,7 @@ public class CriarUsuarioUseCase {
             String celular,
             String telefone,
             String email,
+            String senha,
             String cargo,
             Double salario
     ) {}

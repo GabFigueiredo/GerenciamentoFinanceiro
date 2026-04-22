@@ -1,4 +1,4 @@
-package com.umc.useCases.transacao;
+package com.umc.useCases.transacao.saque;
 
 import com.umc.ExchangeAPI.ExchangeAPIAbstraction;
 import com.umc.model.enums.CategoriaDespesa;
@@ -52,7 +52,17 @@ public class RealizarSaqueUseCase {
 
         conta.getSaldoAtual().subtrair(valorNaMoedaDaConta);
         conta.getDespesaMensal().somar(valorNaMoedaDaConta);
-        contaRepository.save(conta);
+        conta = Conta.builder(conta.getUsuario(), conta.getMoeda())
+                .id(conta.getId())
+                .saldoAtual(conta.getSaldoAtual())
+                .despesaMensal(conta.getDespesaMensal())
+                .metas(conta.getMetas())
+                .limiteGastoMensal(conta.getLimiteGastoMensal())
+                .descricao(conta.getDescricao())
+                .dataCriacao(conta.getDataCriacao())
+                .dataAtualizacao(LocalDate.now())
+                .build();
+        contaRepository.update(conta);
 
         LocalDate hoje = LocalDate.now();
 

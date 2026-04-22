@@ -1,4 +1,4 @@
-package com.umc.useCases.transacao;
+package com.umc.useCases.transacao.deposito;
 
 import com.umc.ExchangeAPI.ExchangeAPIAbstraction;
 import com.umc.model.enums.Moeda;
@@ -46,7 +46,17 @@ public class RealizarDepositoUseCase {
         }
 
         conta.getSaldoAtual().somar(valorNaMoedaDaConta);
-        contaRepository.save(conta);
+        conta = Conta.builder(conta.getUsuario(), conta.getMoeda())
+                .id(conta.getId())
+                .saldoAtual(conta.getSaldoAtual())
+                .despesaMensal(conta.getDespesaMensal())
+                .metas(conta.getMetas())
+                .limiteGastoMensal(conta.getLimiteGastoMensal())
+                .descricao(conta.getDescricao())
+                .dataCriacao(conta.getDataCriacao())
+                .dataAtualizacao(LocalDate.now())
+                .build();
+        contaRepository.update(conta);
 
         LocalDate hoje = LocalDate.now();
 
