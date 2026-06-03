@@ -61,6 +61,13 @@
             <scope>runtime</scope>
         </dependency>
         <!-- TEST -->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId> <!-- was: starter-webmvc-test -->
@@ -72,6 +79,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Teste.java</include>
+                        <include>**/*TesteE2E.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

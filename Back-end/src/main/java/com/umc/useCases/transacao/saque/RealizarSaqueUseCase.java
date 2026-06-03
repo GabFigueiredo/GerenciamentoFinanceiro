@@ -10,6 +10,10 @@ import com.umc.model.transacao.Saque.Despesa;
 import com.umc.model.Dinheiro;
 import com.umc.model.transacao.Saque.Saque;
 import com.umc.model.transacao.Saque.SaqueRepository;
+import com.umc.useCases.transacao.saque.validacao.ProcessadorSaque;
+import com.umc.useCases.transacao.saque.validacao.SaqueExecutor;
+import com.umc.useCases.transacao.saque.validacao.ValidacaoLimiteMensalDecorator;
+import com.umc.useCases.transacao.saque.validacao.ValidacaoSaldoDecorator;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -47,25 +51,7 @@ public class RealizarSaqueUseCase {
             valorNaMoedaDaConta.setValor(valorSolicitado.getValor());
         }
 
-        validarSaldo(conta, valorNaMoedaDaConta);
-        validarLimiteMensal(conta, valorNaMoedaDaConta);
-
-        conta.getSaldoAtual().subtrair(valorNaMoedaDaConta);
-        conta.getDespesaMensal().somar(valorNaMoedaDaConta);
-        conta = Conta.builder(conta.getUsuario(), conta.getMoeda())
-                .id(conta.getId())
-                .saldoAtual(conta.getSaldoAtual())
-                .despesaMensal(conta.getDespesaMensal())
-                .metas(conta.getMetas())
-                .limiteGastoMensal(conta.getLimiteGastoMensal())
-                .descricao(conta.getDescricao())
-                .dataCriacao(conta.getDataCriacao())
-                .dataAtualizacao(LocalDate.now())
-                .build();
-        contaRepository.update(conta);
-
         LocalDate hoje = LocalDate.now();
-
         Despesa despesa = new Despesa(
                 UUID.randomUUID().toString(),
                 command.descricao(),
@@ -87,6 +73,28 @@ public class RealizarSaqueUseCase {
                 despesa
         );
 
+        // Decorator
+        ProcessadorSaque processador = new ValidacaoSaldoDecorator(
+                new ValidacaoLimiteMensalDecorator(
+                        new SaqueExecutor()
+                )
+        );
+        processador.processar(saque, conta);
+
+        conta.getSaldoAtual().subtrair(valorNaMoedaDaConta);
+        conta.getDespesaMensal().somar(valorNaMoedaDaConta);
+        conta = Conta.builder(conta.getUsuario(), conta.getMoeda())
+                .id(conta.getId())
+                .saldoAtual(conta.getSaldoAtual())
+                .despesaMensal(conta.getDespesaMensal())
+                .metas(conta.getMetas())
+                .limiteGastoMensal(conta.getLimiteGastoMensal())
+                .descricao(conta.getDescricao())
+                .dataCriacao(conta.getDataCriacao())
+                .dataAtualizacao(LocalDate.now())
+                .build();
+        contaRepository.update(conta);
+
         saqueRepository.save(saque);
         return saque;
     }
@@ -104,27 +112,6 @@ public class RealizarSaqueUseCase {
             throw new IllegalArgumentException("categoria e obrigatoria");
         if (command.destino() == null || command.destino().isBlank())
             throw new IllegalArgumentException("destino e obrigatorio");
-    }
-
-    private void validarSaldo(Conta conta, Dinheiro valorNaMoedaDaConta) {
-        if (valorNaMoedaDaConta.getValor() > conta.getSaldoAtual().getValor()) {
-            throw new IllegalStateException(
-                    String.format("Saldo insuficiente. Disponivel: %.2f %s, Solicitado: %.2f %s",
-                            conta.getSaldoAtual().getValor(), conta.getMoeda(),
-                            valorNaMoedaDaConta.getValor(), conta.getMoeda())
-            );
-        }
-    }
-
-    private void validarLimiteMensal(Conta conta, Dinheiro valorNaMoedaDaConta) {
-        double projecao = conta.getDespesaMensal().getValor() + valorNaMoedaDaConta.getValor();
-        if (projecao > conta.getLimiteGastoMensal().getValor()) {
-            throw new IllegalStateException(
-                    String.format("Limite mensal atingido. Limite: %.2f %s, Projecao apos saque: %.2f %s",
-                            conta.getLimiteGastoMensal().getValor(), conta.getMoeda(),
-                            projecao, conta.getMoeda())
-            );
-        }
     }
 
     public record Command(
