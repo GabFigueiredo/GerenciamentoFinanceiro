@@ -5,7 +5,6 @@ public class ExchangeResponse {
     private String target;
     private double rate;
 
-    // getters e setters
     public double getRate() {
         return rate;
     }

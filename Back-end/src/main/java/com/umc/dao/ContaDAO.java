@@ -1,6 +1,7 @@
 package com.umc.dao;
 
 import com.umc.config.DatabaseConfig;
+import com.umc.model.conta.ContaRepository;
 import com.umc.model.enums.Moeda;
 import com.umc.model.*;
 import com.umc.model.conta.Conta;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ContaDAO implements com.umc.model.conta.ContaRepository {
+public class ContaDAO implements ContaRepository {
 
     private final DatabaseConfig databaseConfig;
     private final UsuarioDAO usuarioDAO;
