@@ -66,7 +66,6 @@ public class Conta {
         return new Builder(usuario, moeda);
     }
 
-    // Getters only (recommended when using Builder)
     public UUID getId() { return id; }
     public Usuario getUsuario() { return usuario; }
     public Dinheiro getSaldoAtual() { return saldoAtual; }

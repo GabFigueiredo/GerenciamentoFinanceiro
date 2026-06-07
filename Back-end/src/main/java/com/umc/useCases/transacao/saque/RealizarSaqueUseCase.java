@@ -74,7 +74,8 @@ public class RealizarSaqueUseCase {
         );
 
         // Decorator
-        ProcessadorSaque processador = new ValidacaoSaldoDecorator(
+        ProcessadorSaque processador =
+                new ValidacaoSaldoDecorator(
                 new ValidacaoLimiteMensalDecorator(
                         new SaqueExecutor()
                 )

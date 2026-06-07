@@ -132,7 +132,6 @@ public class ContaDAO implements com.umc.model.conta.ContaRepository {
         }
     }
 
-    // Maps a ResultSet row to a Conta object
     private Conta mapRow(ResultSet rs) throws SQLException {
         Moeda moeda = Moeda.valueOf(rs.getString("moeda"));
 

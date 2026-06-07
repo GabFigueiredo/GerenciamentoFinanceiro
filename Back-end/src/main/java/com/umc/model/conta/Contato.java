@@ -1,15 +1,18 @@
 package com.umc.model.conta;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Contato {
     private String celular;
     private String telefone;
 
     public Contato() {}
 
-    @com.fasterxml.jackson.annotation.JsonCreator
+    @JsonCreator
     public Contato(
-            @com.fasterxml.jackson.annotation.JsonProperty("celular") String celular,
-            @com.fasterxml.jackson.annotation.JsonProperty("telefone") String telefone
+            @JsonProperty("celular") String celular,
+            @JsonProperty("telefone") String telefone
     ) {
         this.celular = celular;
         this.telefone = telefone;

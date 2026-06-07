@@ -114,7 +114,6 @@ public class UsuarioDAO implements UsuarioRepository {
         }
     }
 
-    // Maps a ResultSet row to a Usuario object
     private Usuario mapRow(ResultSet rs) throws SQLException {
         Contato contato = new Contato(
                 rs.getString("contato_celular"),
