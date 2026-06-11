@@ -27,6 +27,7 @@ public class CriarContaUseCase {
     public Conta execute(Command command) throws SQLException {
         validar(command);
 
+        // Verifica se UsuarioId existe no banco de dados, se não, lança excessão
         Usuario usuario = usuarioRepository.findById(command.usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Usuario nao encontrado"));
 

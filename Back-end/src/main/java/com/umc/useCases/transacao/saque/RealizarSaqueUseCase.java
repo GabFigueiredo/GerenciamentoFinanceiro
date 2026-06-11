@@ -80,6 +80,7 @@ public class RealizarSaqueUseCase {
                         new SaqueExecutor()
                 )
         );
+
         processador.processar(saque, conta);
 
         conta.getSaldoAtual().subtrair(valorNaMoedaDaConta);
