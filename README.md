@@ -107,9 +107,4 @@ Esses dados estao em `Back-end/src/main/resources/application.properties` para e
 - Depositos e saques podem fazer conversao de moeda quando necessario.
 - Saques validam saldo disponivel e limite mensal da conta.
 
-## Detalhamento das rotas
-
-Se quiser ver exemplos de request, response e campos de cada rota, consulte:
-
-- `Back-end/API_ROUTES.md`
 
