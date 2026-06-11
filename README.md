@@ -25,32 +25,6 @@ API do projeto de gerenciamento financeiro desenvolvida com Spring Boot. Ela cui
 - Maven
 - MySQL rodando localmente, ou Docker instalado
 
-## Como executar
-
-### Opcao 1: rodando localmente
-
-1. Entre na pasta do back-end:
-   ```bash
-   cd Back-end
-   ```
-2. Verifique a conexao com o banco em `src/main/resources/application.properties`.
-3. Execute a aplicacao:
-   ```bash
-   mvn spring-boot:run
-   ```
-
-A API fica disponivel em `http://localhost:8080`.
-
-### Opcao 2: usando Docker Compose
-
-Dentro da pasta `Back-end`, rode:
-
-```bash
-docker compose up --build
-```
-
-Isso sobe o banco MySQL e a aplicacao juntos.
-
 ## Configuracao do banco
 
 Por padrao, a aplicacao usa:
